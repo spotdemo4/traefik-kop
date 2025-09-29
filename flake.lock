@@ -40,25 +40,8 @@
       "inputs": {
         "nixpkgs": "nixpkgs",
         "nur": "nur",
-        "semgrep-rules": "semgrep-rules",
         "systems": "systems",
         "utils": "utils"
-      }
-    },
-    "semgrep-rules": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1758632996,
-        "narHash": "sha256-+CLQoBU3rhdbJ30TFZBv9uuED2kejhGWv3Lcd28LVHQ=",
-        "owner": "semgrep",
-        "repo": "semgrep-rules",
-        "rev": "12f2eb5b92f2109a16c256a15f8b394f72f9a340",
-        "type": "github"
-      },
-      "original": {
-        "owner": "semgrep",
-        "repo": "semgrep-rules",
-        "type": "github"
       }
     },
     "systems": {
