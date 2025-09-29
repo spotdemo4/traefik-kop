@@ -13,13 +13,13 @@ import (
 	"github.com/docker/docker/client"
 	"github.com/sirupsen/logrus"
 	ptypes "github.com/traefik/paerser/types"
-	"github.com/traefik/traefik/v2/pkg/config/dynamic"
-	"github.com/traefik/traefik/v2/pkg/config/static"
-	"github.com/traefik/traefik/v2/pkg/provider"
-	"github.com/traefik/traefik/v2/pkg/provider/aggregator"
-	"github.com/traefik/traefik/v2/pkg/provider/docker"
-	"github.com/traefik/traefik/v2/pkg/safe"
-	"github.com/traefik/traefik/v2/pkg/server"
+	"github.com/traefik/traefik/v3/pkg/config/dynamic"
+	"github.com/traefik/traefik/v3/pkg/config/static"
+	"github.com/traefik/traefik/v3/pkg/provider"
+	"github.com/traefik/traefik/v3/pkg/provider/aggregator"
+	"github.com/traefik/traefik/v3/pkg/provider/docker"
+	"github.com/traefik/traefik/v3/pkg/safe"
+	"github.com/traefik/traefik/v3/pkg/server"
 	"golang.org/x/exp/slices"
 )
 
@@ -47,9 +47,6 @@ func newDockerProvider(config Config) *docker.Provider {
 	if dp.HTTPClientTimeout.String() != "0s" && strings.HasPrefix(dp.Endpoint, "unix://") {
 		// force to 0 for unix socket
 		dp.HTTPClientTimeout = ptypes.Duration(defaultTimeout)
-	}
-	if dp.SwarmModeRefreshSeconds.String() == "0s" {
-		dp.SwarmModeRefreshSeconds = ptypes.Duration(15 * time.Second)
 	}
 	dp.Watch = true // always
 

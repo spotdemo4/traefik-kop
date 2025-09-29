@@ -11,16 +11,16 @@ import (
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
-	"github.com/traefik/traefik/v2/pkg/config/dynamic"
-	"github.com/traefik/traefik/v2/pkg/log"
+	"github.com/traefik/traefik/v3/pkg/config/dynamic"
 )
 
 func init() {
 	logrus.SetLevel(logrus.DebugLevel)
-	log.SetLevel(logrus.DebugLevel)
-	log.WithoutContext().WriterLevel(logrus.DebugLevel)
+	zerolog.SetGlobalLevel(zerolog.DebugLevel)
 }
 
 type fakeDockerClient struct {
@@ -83,7 +83,7 @@ func createTestClient(labels map[string]string) *fakeDockerClient {
 }
 
 func Test_replacePorts(t *testing.T) {
-	log.Debug("Testing replacePorts")
+	log.Debug().Msg("Testing replacePorts")
 
 	portLabel := "traefik.http.services.nginx.loadbalancer.server.port"
 	dc := createTestClient(map[string]string{
@@ -100,19 +100,19 @@ func Test_replacePorts(t *testing.T) {
 	require.True(t, strings.HasSuffix(cfg.HTTP.Services["nginx@docker"].LoadBalancer.Servers[0].URL, "172.20.0.2:80"))
 
 	// explicit label present
-	log.Debug("explicit label present")
+	log.Debug().Msg("explicit label present")
 	replaceIPs(fc, cfg, "4.4.4.4")
 	require.True(t, strings.HasSuffix(cfg.HTTP.Services["nginx@docker"].LoadBalancer.Servers[0].URL, "4.4.4.4:8888"), "URL '%s' should end with '%s'", cfg.HTTP.Services["nginx@docker"].LoadBalancer.Servers[0].URL, "4.4.4.4:8888")
 
 	// without label but no port binding
-	log.Debug("without label but no port binding")
+	log.Debug().Msg("without label but no port binding")
 	delete(dc.container.Config.Labels, portLabel)
 	json.Unmarshal([]byte(NGINX_CONF_JSON), cfg)
 	replaceIPs(fc, cfg, "4.4.4.4")
 	require.True(t, strings.HasSuffix(cfg.HTTP.Services["nginx@docker"].LoadBalancer.Servers[0].URL, "4.4.4.4:80"))
 
 	// with port binding
-	log.Debug("with port binding")
+	log.Debug().Msg("with port binding")
 	portMap := nat.PortMap{
 		"80": []nat.PortBinding{
 			{HostIP: "172.20.0.2", HostPort: "8888"},

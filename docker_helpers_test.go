@@ -16,7 +16,6 @@ import (
 	compose "github.com/docker/cli/cli/compose/types"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
-	"github.com/docker/docker/api/types/events"
 	"github.com/docker/docker/api/types/network"
 	"github.com/docker/docker/api/types/swarm"
 	"github.com/docker/go-connections/nat"
@@ -24,10 +23,10 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/ryanuber/go-glob"
 	"github.com/stretchr/testify/assert"
-	"github.com/traefik/traefik/v2/pkg/config/dynamic"
-	"github.com/traefik/traefik/v2/pkg/provider/docker"
-	"github.com/traefik/traefik/v2/pkg/safe"
-	"github.com/traefik/traefik/v2/pkg/server"
+	"github.com/traefik/traefik/v3/pkg/config/dynamic"
+	"github.com/traefik/traefik/v3/pkg/provider/docker"
+	"github.com/traefik/traefik/v3/pkg/safe"
+	"github.com/traefik/traefik/v3/pkg/server"
 )
 
 type testStore struct {
@@ -96,12 +95,6 @@ func (d DockerAPIStub) ServerVersion(ctx context.Context) (types.Version, error)
 	}, nil
 }
 
-func (d DockerAPIStub) Events(ctx context.Context, options types.EventsOptions) (<-chan events.Message, <-chan error) {
-	// Implement your logic here
-	fmt.Println("Events")
-	return nil, nil
-}
-
 func (d DockerAPIStub) ContainerList(ctx context.Context, options container.ListOptions) ([]types.Container, error) {
 	// Implement your logic here
 	fmt.Println("ContainerList")
@@ -117,12 +110,6 @@ func (d DockerAPIStub) ContainerInspect(ctx context.Context, containerID string)
 func (d DockerAPIStub) ServiceList(ctx context.Context, options types.ServiceListOptions) ([]swarm.Service, error) {
 	// Implement your logic here
 	fmt.Println("ServiceList")
-	return nil, nil
-}
-
-func (d DockerAPIStub) NetworkList(ctx context.Context, options types.NetworkListOptions) ([]types.NetworkResource, error) {
-	// Implement your logic here
-	fmt.Println("NetworkList")
 	return nil, nil
 }
 

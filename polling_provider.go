@@ -4,11 +4,12 @@ import (
 	"context"
 	"time"
 
+	"github.com/rs/zerolog/log"
 	"github.com/sirupsen/logrus"
-	"github.com/traefik/traefik/v2/pkg/config/dynamic"
-	"github.com/traefik/traefik/v2/pkg/log"
-	"github.com/traefik/traefik/v2/pkg/provider"
-	"github.com/traefik/traefik/v2/pkg/safe"
+	"github.com/traefik/traefik/v3/pkg/config/dynamic"
+	"github.com/traefik/traefik/v3/pkg/logs"
+	"github.com/traefik/traefik/v3/pkg/provider"
+	"github.com/traefik/traefik/v3/pkg/safe"
 )
 
 // PollingProvider simply wraps the target upstream provider with a poller.
@@ -36,7 +37,7 @@ func (p PollingProvider) Provide(configurationChan chan<- dynamic.Message, pool 
 	ticker := time.NewTicker(p.refreshInterval)
 
 	pool.GoCtx(func(ctx context.Context) {
-		ctx = log.With(ctx, log.Str(log.ProviderName, "docker"))
+		ctx = log.With().Str(logs.ProviderName, "docker").Logger().WithContext(ctx)
 
 		for {
 			select {

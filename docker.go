@@ -13,7 +13,7 @@ import (
 	"github.com/docker/go-connections/nat"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	"github.com/traefik/traefik/v2/pkg/provider/docker"
+	"github.com/traefik/traefik/v3/pkg/provider/docker"
 )
 
 // Copied from traefik. See docker provider package for original impl
