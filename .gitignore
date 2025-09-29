@@ -3,3 +3,7 @@
 /traefik-kop*
 /dist
 
+# nix
+/.envrc
+/result*
+/.direnv/
